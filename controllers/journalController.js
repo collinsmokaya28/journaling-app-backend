@@ -41,3 +41,13 @@ exports.delete = async (req, res) => {
         res.status(500).json({ error: 'Error deleting journal entry' });
     }
 };
+exports.getSummary = async(req, res) => {
+    const{ startDate, endDate} = req.query;
+    const userId = req.user.id;
+    try {
+        const summary = await Journal.getSummary(userId, startDate. endDate);
+        res.status(200).json(summary);
+    } catch (error) {
+        res.status(500).json({error: 'Error fetching summary data'});
+    }
+};

@@ -25,6 +25,13 @@ class Journal {
     static async delete(id) {
         await pool.query('DELETE FROM journals WHERE id = $1', [id]);
     }
+    static async getSummary(userId, startDate, endDate) {
+        const result = await pool.query(
+            'SELECT category, COUNT(*) as count FROM journals WHERE user_id = $1 AND created_at BETWEEN $2 GROUP BY category',
+            [userId, startDate, endDate]
+        );
+        return result.rows;
+    }
 }
 
 module.exports = Journal;
